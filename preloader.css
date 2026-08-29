@@ -1,0 +1,379 @@
+ /* KUNCI INSTAN GLOBAL: Hanya mengunci halaman jika BELUM di-authorize */
+    :root:not(.has-authorized) body {
+        background-color: #050608 !important;
+        visibility: hidden !important;
+        overflow: hidden !important;
+        height: 100vh !important;
+    }
+
+    /* Memastikan preloader global tetap menyala di atas segalanya */
+    :root:not(.has-authorized) .zero-one-preloader {
+        visibility: visible !important;
+        display: flex !important;
+    }
+
+    /* Sembunyikan elemen color switching bawaan selama preloader aktif */
+    :root:not(.has-authorized) [class*="switcher"],
+    :root:not(.has-authorized) [id*="switcher"],
+    :root:not(.has-authorized) .gans-energy-panel {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+    }
+
+    .zero-one-preloader {
+        --cyan-tech: #00e1ff;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 99999999 !important;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        background-color: #050608 !important;
+        font-family: 'Share Tech Mono', monospace !important;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .zero-one-preloader .preloader-panel {
+        position: absolute;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        background-color: #050608;
+        transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        z-index: 1;
+    }
+
+    .zero-one-preloader .panel-left {
+        left: 0;
+        transform-origin: left;
+    }
+
+    .zero-one-preloader .panel-right {
+        right: 0;
+        transform-origin: right;
+    }
+
+    /* Garis pembelah tengah menyambung penuh */
+    .zero-one-preloader .panel-left::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        background: var(--cyan);
+        box-shadow: 0 0 12px var(--cyan);
+    }
+
+    .zero-one-preloader .panel-right::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1px;
+        height: 100%;
+        background: var(--cyan);
+        box-shadow: 0 0 12px var(--cyan);
+    }
+
+    .zero-one-preloader .hud-main-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .zero-one-preloader .hex-grid {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: radial-gradient(var(--cyan) 1px, transparent 1px), radial-gradient(var(--cyan) 1px, transparent 1px);
+        background-size: 40px 40px;
+        background-position: 0 0, 20px 20px;
+        opacity: 0.12;
+    }
+
+    .zero-one-preloader .zea-vertical-hud-lines {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .zero-one-preloader .hud-svg {
+        position: absolute;
+        width: 80px;
+        height: 100%;
+    }
+
+    .zero-one-preloader .svg-left-outer {
+        top: 0;
+        left: 10%;
+    }
+
+    .zero-one-preloader .svg-left-inner {
+        top: 0;
+        left: 22%;
+    }
+
+    .zero-one-preloader .svg-right-inner {
+        top: 0;
+        right: 22%;
+    }
+
+    .zero-one-preloader .svg-right-outer {
+        top: 0;
+        right: 10%;
+    }
+
+    .zero-one-preloader .hud-svg .base-path {
+        fill: none !important;
+        stroke: var(--cyan);
+        stroke-width: 1.5px;
+        opacity: 0.15;
+    }
+
+    .zero-one-preloader .hud-svg .glow-path {
+        fill: none !important;
+        stroke: var(--cyan);
+        stroke-width: 2.5px;
+        filter: drop-shadow(0 0 5px var(--cyan));
+        stroke-dasharray: 120 400;
+        stroke-dashoffset: 520;
+        animation: zea-stream-rambat-vert 3s infinite linear;
+    }
+
+    @keyframes zea-stream-rambat-vert {
+        0% {
+            stroke-dashoffset: 520;
+            opacity: 0;
+        }
+
+        10%,
+        90% {
+            opacity: 1;
+        }
+
+        100% {
+            stroke-dashoffset: 0;
+            opacity: 0;
+        }
+    }
+
+    .zero-one-preloader .zea-hud-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 350px;
+        height: 350px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10 !important;
+    }
+
+    .zero-one-preloader .hud-ring {
+        position: absolute;
+        border-radius: 50%;
+    }
+
+    .zero-one-preloader .authorize-ring {
+        width: 320px;
+        height: 320px;
+        border: 4px solid transparent;
+        border-top-color: var(--cyan);
+        border-bottom-color: var(--cyan);
+        box-shadow: 0 0 20px var(--cyan);
+        animation: zea-spin 4s linear infinite;
+    }
+
+    .zero-one-preloader .tech-ring {
+        width: 260px;
+        height: 260px;
+        border: 2px dashed red;
+        animation: zea-spin-reverse 8s linear infinite;
+        opacity: 0.7;
+    }
+
+    .zero-one-preloader .core-hex {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .zero-one-preloader .hex-shape {
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        background: #050608 !important;
+        border: 2px solid var(--cyan);
+        box-shadow: inset 0 0 15px var(--cyan);
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        animation: zea-pulse 2s ease-in-out infinite;
+    }
+
+    .zero-one-preloader .zea-text-center {
+        position: absolute;
+        text-align: center;
+        color: #ffffff;
+        width: 100%;
+        z-index: 12;
+    }
+
+    .zero-one-preloader .system-title {
+        font-family: 'Share Tech Mono', monospace !important;
+        font-size: 13px;
+        letter-spacing: 3px;
+        color: var(--cyan-tech);
+        margin-bottom: 3px;
+    }
+
+    .zero-one-preloader .charge-status {
+        font-family: 'Share Tech Mono', monospace !important;
+        font-size: 56px;
+        font-weight: bold;
+        line-height: 1;
+    }
+
+    .zero-one-preloader .status-tag {
+        font-family: 'Share Tech Mono', monospace !important;
+        font-size: 13px;
+        letter-spacing: 4px;
+        background: var(--cyan);
+        color: #000000;
+        padding: 3px 12px;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 6px;
+        transform: skewX(-15deg);
+        animation: blink-tag 1s steps(2, start) infinite;
+    }
+
+    .zero-one-preloader.loaded .panel-left {
+        transform: translateX(-100%);
+    }
+
+    .zero-one-preloader.loaded .panel-right {
+        transform: translateX(100%);
+    }
+
+    .zero-one-preloader.loaded .hud-main-content {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    @keyframes zea-spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes zea-spin-reverse {
+        0% {
+            transform: rotate(360deg);
+        }
+
+        100% {
+            transform: rotate(0deg);
+        }
+    }
+
+    @keyframes zea-pulse {
+
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 0.8;
+        }
+
+        50% {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+    }
+
+    @keyframes blink-tag {
+        to {
+            visibility: hidden;
+        }
+    }
+
+    /* MEDIA QUERY MOBILE FRIENDLY */
+    @media (max-width: 767px) {
+        .zero-one-preloader .zea-hud-container {
+            width: 280px;
+            height: 280px;
+        }
+
+        .zero-one-preloader .authorize-ring {
+            width: 260px;
+            height: 260px;
+        }
+
+        .zero-one-preloader .tech-ring {
+            width: 210px;
+            height: 210px;
+        }
+
+        .zero-one-preloader .hex-shape {
+            width: 130px;
+            height: 130px;
+            background: #050608 !important;
+        }
+
+        .zero-one-preloader .system-title {
+            font-size: 10px;
+            letter-spacing: 1.5px;
+        }
+
+        .zero-one-preloader .charge-status {
+            font-size: 42px;
+        }
+
+        .zero-one-preloader .status-tag {
+            font-size: 10px;
+            padding: 2px 8px;
+            margin-top: 4px;
+        }
+
+        .zero-one-preloader .svg-left-outer {
+            left: 1%;
+        }
+
+        .zero-one-preloader .svg-right-outer {
+            right: 1%;
+        }
+
+        .zero-one-preloader .svg-left-inner,
+        .zero-one-preloader .svg-right-inner {
+            display: none !important;
+        }
+    }

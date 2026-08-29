@@ -20,8 +20,59 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tooplate-2167-orbital-style.css">
 <link rel="stylesheet" href="timeline.css">
+<link rel="stylesheet" href="preloader.css">
 <link rel="icon" type="image/x-icon" href="images/AF.png">
 </head>
+<div class="zero-one-preloader">
+    <!-- Panel Kiri Progrise Key -->
+    <div class="preloader-panel panel-left"></div>
+    <!-- Panel Kanan Progrise Key -->
+    <div class="preloader-panel panel-right"></div>
+
+    <!-- Konten HUD Utama -->
+    <div class="hud-main-content">
+        <!-- Pola Heksagonal Latar Belakang Bergerak -->
+        <div class="hex-grid"></div>
+
+        <!-- JALUR STRIP HUD VERTIKAL STATIS DENGAN KILATAN CAHAYA -->
+        <div class="zea-vertical-hud-lines">
+            <svg class="hud-svg svg-left-outer" viewBox="0 0 100 500" preserveAspectRatio="none">
+                <path d="M50,0 L50,200 L15,240 L15,380 L50,410 L50,500" class="base-path" />
+                <path d="M50,0 L50,200 L15,240 L15,380 L50,410 L50,500" class="glow-path" />
+            </svg>
+            <svg class="hud-svg svg-left-inner" viewBox="0 0 100 500" preserveAspectRatio="none">
+                <path d="M50,0 L50,300 L15,260 L15,120 L50,90 L50,500" class="base-path" />
+                <path d="M50,0 L50,300 L15,260 L15,120 L50,90 L50,500" class="glow-path" style="animation-delay: 1s;" />
+            </svg>
+            <svg class="hud-svg svg-right-inner" viewBox="0 0 100 500" preserveAspectRatio="none">
+                <path d="M50,0 L50,150 L85,190 L85,320 L50,350 L50,500" class="base-path" />
+                <path d="M50,0 L50,150 L85,190 L85,320 L50,350 L50,500" class="glow-path"
+                    style="animation-delay: 0.5s;" />
+            </svg>
+            <svg class="hud-svg svg-right-outer" viewBox="0 0 100 500" preserveAspectRatio="none">
+                <path d="M50,0 L50,350 L85,310 L85,180 L50,150 L50,500" class="base-path" />
+                <path d="M50,0 L50,350 L85,310 L85,180 L50,150 L50,500" class="glow-path"
+                    style="animation-delay: 1.5s;" />
+            </svg>
+        </div>
+
+        <!-- HUB TENGAH KOORDINAT MATI -->
+        <div class="zea-hud-container">
+            <div class="hud-ring authorize-ring"></div>
+            <div class="hud-ring tech-ring"></div>
+            <div class="hud-ring core-hex">
+                <div class="hex-shape"></div>
+            </div>
+            <div class="zea-text-center">
+                <div class="system-title">WELCOME TO MY PORTFOLIO</div>
+                <div class="charge-status"><span id="percent">0</span>%</div>
+                <div class="status-tag">CLICK TO AUTHORIZE</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <body class="visuals-on">
 
@@ -405,5 +456,6 @@
 <script src="tooplate-2167-orbital-script.js"></script>
 <script src="timeline.js"></script>
 <script src="js/custom.js"></script>
+<script src="js/preloader.js"></script>
 </body>
 </html>
