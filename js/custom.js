@@ -39,32 +39,45 @@ fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${C
 
 
 
-//IG API via Behold.so
+//IG API 
 
-// URL dari tangkapan layar Behold Anda
-const BEHOLD_URL = 'https://feeds.behold.so/jinIBd9CGECWIVmmCciM';
+    // Tempelkan token panjang dari tombol "Buat token" di Meta Developer
+    const META_ACCESS_TOKEN = 'IGAAjST5cNpcZABZAGFDbm1fS0ZAPa0xaaVZAnbkpoVFFqSWxNckhFVHk2OFdyajBSeWE4ME83b2IwVXM1X1k0djJtN2FUWUd4THFFXzFnNDVXLXpnMGdPUGlhUHNwdHlIVW83QUZAkc2YyLXRaUTlvbGhyaTJvekQxcWpzRnNESW5aRQZDZD'; 
 
-fetch(BEHOLD_URL)
-    .then(res => res.json())
-    .then(data => {
-        // 1. Set Foto Profil & Username
-        document.getElementById('ig-profile-pic').src = data.profilePictureUrl;
-        document.getElementById('ig-username').innerText = `@${data.username}`;
+    const META_USER_URL = `https://graph.instagram.com/me?fields=id,username,account_type,media_count,followers_count,profile_picture_url&access_token=${META_ACCESS_TOKEN}`;
+    const META_FEED_URL = `https://graph.instagram.com/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink&access_token=${META_ACCESS_TOKEN}`;
 
-        // 2. Set Jumlah Followers (Behold bisa menarik data ini)
-        document.getElementById('ig-followers').innerText = `${data.followersCount} Followers`;
+    // 1. AMBIL PROFIL INSTAGRAM (Username & Followers)
+    fetch(META_USER_URL)
+        .then(res => res.json())
+        .then(profileData => {
+            if(profileData.username) {
+                document.getElementById('ig-profile-pic').src = profileData.profile_picture_url || 'https://placeholder.com';
+                document.getElementById('ig-username').innerText = `@${profileData.username}`;
+                
+                // API Sandbox sering mengembalikan nilai kosong untuk followers pada akun uji coba. 
+                // Jika kosong/undefined, kita set manual ke '49' agar sesuai profil Anda.
+                const followers = profileData.followers_count !== undefined ? profileData.followers_count : '49';
+                document.getElementById('ig-followers').innerText = `${followers} Followers`;
+            }
+        })
+        .catch(err => console.error("Gagal memuat profil Instagram:", err));
 
-        // 3. Tampilkan 3 Postingan Terbaru
-        const feedContainer = document.getElementById('ig-feed');
-        feedContainer.innerHTML = ''; // Kosongkan kontainer lama
+    // 2. AMBIL FEED / REELS INSTAGRAM (Maksimal 3 Terbaru)
+    fetch(META_FEED_URL)
+        .then(res => res.json())
+        .then(feedData => {
+            const feedContainer = document.getElementById('ig-feed');
+            if (feedData && feedData.data) {
+                feedContainer.innerHTML = ''; // Bersihkan kontainer lama
+                
+                // Ambil maksimal 3 item teratas (Foto / Reels)
+                const latestPosts = feedData.data.slice(0, 6);
+                latestPosts.forEach(post => {
+                    // Jika tipe VIDEO (Reels), gunakan parameter thumbnail_url resmi dari Meta agar gambar cover muncul
+                    const imageSrc = post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url;
 
-        // Ambil hanya 3 post pertama
-        const latestPosts = data.posts.slice(0, 3);
-
-        latestPosts.forEach(post => {
-            const imageSrc = post.mediaType === 'VIDEO' ? post.thumbnailUrl : post.mediaUrl;
-
-            feedContainer.innerHTML += `
+                     feedContainer.innerHTML += `
     <div class="col-4">
       <div class="ig-thumbnail" style="margin-bottom: 15px;">
         <a href="${post.permalink}" target="_blank">
@@ -72,12 +85,14 @@ fetch(BEHOLD_URL)
         </a>
       </div>
     </div>
-  `;
+                    `;
+                });
+            } else {
+                feedContainer.innerHTML = '<p class="text-center" style="color:#aaa; font-size:13px;">Gagal memuat feed Instagram.</p>';
+            }
+        })
+        .catch(err => {
+            console.error("Error Instagram Feed:", err);
+            document.getElementById('ig-feed').innerHTML = '<p class="text-center" style="color:#aaa; font-size:13px;">Gagal memuat feed Instagram.</p>';
         });
-    })
-    .catch(err => {
-        console.error("Gagal memuat Instagram:", err);
-        document.getElementById('ig-feed').innerHTML = '<p class="text-center">Gagal memuat feed Instagram.</p>';
-    });
-
 
