@@ -42,7 +42,7 @@ fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${C
 //IG API via Behold.so
 
 // URL dari tangkapan layar Behold Anda
-const BEHOLD_URL = 'https://feeds.behold.so/mPWXXCfpTfVY3PSrfMxP';
+const BEHOLD_URL = 'https://feeds.behold.so/tiMyh1grJTKs9SOebml7';
 
 fetch(BEHOLD_URL)
     .then(res => res.json())
